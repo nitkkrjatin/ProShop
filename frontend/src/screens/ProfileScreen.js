@@ -4,7 +4,7 @@ import { Form, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { getUserDetails } from '../actions/userActions'
+import { getUserDetails, updateUserProfile } from '../actions/userActions'
 
 const ProfileScreen = () => {
   const [name, setName] = useState('')
@@ -21,6 +21,9 @@ const ProfileScreen = () => {
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
+
+  const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
+  const { success } = userUpdateProfile
 
   useEffect(() => {
     if (!userInfo) {
@@ -40,16 +43,19 @@ const ProfileScreen = () => {
     if (password !== password2) {
       setMessage('Password do not match')
     } else {
-      //DISPATCH UPDATE FUNC
+      dispatch(updateUserProfile({ id: user._id, name, email, password }))
     }
   }
 
   return (
     <Row>
       <Col md={3}>
-        <h1>Profile</h1>
+        <h2>User Profile</h2>
         {message && <Message variant='danger' message={message}></Message>}
         {error && <Message variant='danger' message={error}></Message>}
+        {success && (
+          <Message variant='success' message='Profile Updated'></Message>
+        )}
         {loading && <Loader />}
         <Form onSubmit={submitHandler}>
           <Form.Group controlId='name'>
@@ -93,7 +99,9 @@ const ProfileScreen = () => {
           </Button>
         </Form>
       </Col>
-      <Col md={6}></Col>
+      <Col md={6}>
+        <h2>My Orders</h2>
+      </Col>
     </Row>
   )
 }
