@@ -19,11 +19,12 @@ const LoginScreen = () => {
 
   const redirect = window.location.search
     ? window.location.search.split('=')[1]
-    : '/'
+    : null
 
   useEffect(() => {
     if (userInfo) {
-      navigate(`/${redirect}`)
+      if (redirect) navigate(`/${redirect}`)
+      else navigate('/')
     }
   }, [navigate, userInfo, redirect])
 
