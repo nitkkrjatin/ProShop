@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { PayPalButton } from 'react-paypal-button-v2'
 import { Link, useParams } from 'react-router-dom'
-import { Row, Col, ListGroup, Button, Image, Card } from 'react-bootstrap'
+import { Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
@@ -92,7 +92,7 @@ const OrderScreen = () => {
               {order.isDelivered ? (
                 <Message
                   variant='success'
-                  message={`Delevired on ${order.deleviredAt}`}
+                  message={`Delevired on ${order.deleviredAt.substring(0, 10)}`}
                 ></Message>
               ) : (
                 <Message variant='danger' message='Not Delevired'></Message>
@@ -108,7 +108,7 @@ const OrderScreen = () => {
               {order.isPaid ? (
                 <Message
                   variant='success'
-                  message={`Paid on ${order.paidAt}`}
+                  message={`Paid on ${order.paidAt.substring(0, 10)}`}
                 ></Message>
               ) : (
                 <Message variant='danger' message='Not Paid'></Message>
