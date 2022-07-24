@@ -5,8 +5,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
+import Meta from '../components/Meta'
 import { getUserDetails, updateUserProfile } from '../actions/userActions'
 import { listMyOrders } from '../actions/orderActions'
+import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
 
 const ProfileScreen = () => {
   const [name, setName] = useState('')
@@ -34,7 +36,8 @@ const ProfileScreen = () => {
     if (!userInfo) {
       navigate('/login')
     } else {
-      if (!user.name) {
+      if (!user || !user.name || success) {
+        dispatch({ type: USER_UPDATE_PROFILE_RESET })
         dispatch(getUserDetails('profile'))
         dispatch(listMyOrders())
       } else {
@@ -42,7 +45,7 @@ const ProfileScreen = () => {
         setEmail(user.email)
       }
     }
-  }, [navigate, dispatch, userInfo, user])
+  }, [navigate, dispatch, userInfo, user, success])
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -63,6 +66,7 @@ const ProfileScreen = () => {
           <Message variant='success' message='Profile Updated'></Message>
         )}
         {loading && <Loader />}
+        <Meta title={`Hello! ${user.name}`} />
         <Form onSubmit={submitHandler}>
           <Form.Group controlId='name'>
             <Form.Label>Name</Form.Label>
